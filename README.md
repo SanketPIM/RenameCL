@@ -1,10 +1,6 @@
 
 <p align="center">
-  <img src="https://typer.tiangolo.com/img/logo-margin/logo-margin-vector.svg#only-light" alt="Typer" width="180">
-</p>
-
-<p align="center">
-  <strong>RenameCL</strong> – A powerful CLI tool to batch rename files, undo changes, and find/delete duplicates.<br>
+  <strong>TYPER CLI</strong> – A powerful CLI tool to batch rename files, undo changes, and find/delete duplicates.<br>
   Built with Python and Typer.
 </p>
 
