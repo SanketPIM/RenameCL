@@ -1,142 +1,109 @@
+# RenameCL
 
-<p align="center">
-  <strong>TYPER CLI</strong> – A powerful CLI tool to batch rename files, undo changes, and find/delete duplicates.<br>
-  Built with Python and Typer.
-</p>
-
-<p align="center">
-  <a href="https://github.com/SanketPIM/RenameCL">
-    <img src="https://img.shields.io/github/license/SanketPIM/RenameCL" alt="License">
-  </a>
-  <a href="https://pypi.org/project/typer/">
-    <img src="https://img.shields.io/pypi/v/typer?label=Typer&color=34D058" alt="Typer Version">
-  </a>
-</p>
-
----
+A command-line tool to batch rename files, undo renames, and find/delete duplicate files. Built with Python and [Typer](https://typer.tiangolo.com).
 
 ##  Features
 
--  Batch rename files with prefix, suffix, and custom extension
--  Auto-increment file numbering (`_1`, `_2`, ...)
--  Dry-run mode to preview changes without renaming
--  Undo renames using a log file
--  Detect and optionally delete duplicate files (by content hash)
+-  Batch rename files with prefix/suffix/custom extension
+-  Auto-increment file numbering
+-  Dry-run mode for previewing changes
+- ↩ Undo last renaming using a log file
+-  Detect and optionally delete duplicate files (based on SHA-256 hash)
+-  Target specific files with `--filter` option
 
 ---
 
 ##  Installation
 
-### 1. Make sure Python is installed
-
+1. Make sure Python is installed:
 ```bash
 python --version
 ```
 
-### 2. Install dependencies
-
+2. Install Typer (and dependencies):
 ```bash
 pip install typer[all]
 ```
 
 ---
 
-##  Usage
+## 🛠 Usage
 
-> Use the `python Rename.py` command with one of the following subcommands:
+###  Rename Files
+
+```bash
+python Rename.py rename --folder "D:\your\folder" --prefix "img_" --ext jpg
+```
+
+####  Optional Flags
+
+| Flag         | Description |
+|--------------|-------------|
+| `--prefix`   | Add text before the filename |
+| `--suffix`   | Add text after the filename *(ignored if `--auto-number` is on)* |
+| `--ext`      | Change file extension (e.g., jpg, png) |
+| `--auto-number` | Add `_1`, `_2`, etc. to filenames |
+| `--start`    | Starting number for auto-numbering |
+| `--dry-run`  | Preview changes without renaming |
+| `--filter`   | Only rename selected files (comma-separated) |
+
+####  Example
+
+```bash
+python Rename.py rename --folder "D:\photos" --prefix "holiday_" --ext jpg --auto-number True --start 10
+```
+
+####  Rename only specific files
+
+```bash
+python Rename.py rename --folder "D:\myfiles" --prefix "new_" --ext jpg --filter "img1.jpg,img3.jpg,img7.jpg"
+```
 
 ---
 
-### 🔁 `rename` – Rename Files
-
-```bash
-python Rename.py rename --folder "E:\photos" --prefix "img_" --ext jpg
-```
-
-#### Options:
-
-| Flag            | Description                                             |
-|-----------------|---------------------------------------------------------|
-| `--prefix`      | Text to add **before** the filename                     |
-| `--suffix`      | Text to add **after** the filename (ignored if `--auto-number` is used) |
-| `--ext`         | Change file extension (e.g. `jpg`, `txt`)               |
-| `--auto-number` | Auto-add numbers like `_1`, `_2`, etc. (default: true)  |
-| `--start`       | Starting number for auto-number (default: 1)           |
-| `--dry-run`     | Show what will happen without actually renaming files  |
-
-#### Example:
-
-```bash
-python Rename.py rename --folder "E:\docs" --prefix "file_" --ext txt --auto-number False --suffix "_final"
-```
-
----
-
-### ↩️ `undo` – Undo Last Rename
+### 🔙 Undo Last Rename
 
 ```bash
 python Rename.py undo
 ```
 
-- Restores original filenames based on the saved `rename_log.json`.
+Uses `rename_log.json` to restore original file names.
 
 ---
 
-###  `find-duplicates` – Find Duplicate Files
+###  Find Duplicate Files
 
 ```bash
-python Rename.py find-duplicates --folder "E:\myfiles"
+python Rename.py find-duplicates --folder "D:\folder"
 ```
 
-#### Additional Options:
-
-| Flag         | Description                          |
-|--------------|--------------------------------------|
-| `--dry-run`  | Only preview duplicates (default: True) |
-| `--delete`   | Actually delete duplicates           |
-
-#### Example:
+To delete them automatically:
 
 ```bash
-python Rename.py find-duplicates --folder "E:\myfiles" --delete --dry-run False
+python Rename.py find-duplicates --folder "D:\folder" --delete --dry-run False
 ```
 
 ---
 
-##  Logging
+##  Output Logs
 
-- All rename operations are logged in `rename_log.json`.
-- The `undo` command uses this log to restore files to their original names.
-
----
-
-##  How Duplicate Detection Works
-
-This tool uses `hashlib` with the **SHA-256** algorithm to generate a unique fingerprint of each file’s content. If two files have the same hash, they are duplicates — even if their names differ.
+- All rename operations are logged in `rename_log.json`
+- The `undo` command uses this file to revert changes
 
 ---
 
-##  Best Practices
+##  Tips
 
--  Use `--dry-run` before making permanent changes
--  Backup important files before running delete operations
--  Test in a safe folder first to understand behavior
+- Always use `--dry-run` first to preview changes safely.
+- Works across drives (C:, D:, etc.) — just make sure the file paths are correct.
+- `--filter` is helpful when only a few files need changes in a large folder.
 
 ---
 
 ##  License
 
-This project is licensed under the MIT License.
+MIT
 
----
+##  Powered By
 
-##  Author
-
-**SanketPIM**  
-GitHub: [https://github.com/SanketPIM](https://github.com/SanketPIM)
-
----
-
-##  Contributing
-
-Pull requests and suggestions are welcome! If you find bugs or want new features, open an issue or PR.
+[Typer](https://github.com/tiangolo/typer) - Build great CLIs. Easy to code. Based on Python type hints.
